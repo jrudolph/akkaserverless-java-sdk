@@ -16,11 +16,11 @@
 
 package com.akkaserverless.javasdk.impl.replicatedentity
 
-import com.akkaserverless.javasdk.replicatedentity.PNCounter
-import com.akkaserverless.protocol.replicated_entity.{PNCounterDelta, ReplicatedEntityDelta}
+import com.akkaserverless.javasdk.replicatedentity.ReplicatedCounter
+import com.akkaserverless.protocol.replicated_entity.{ReplicatedCounterDelta, ReplicatedEntityDelta}
 
-private[replicatedentity] final class PNCounterImpl extends InternalReplicatedData with PNCounter {
-  override final val name = "PNCounter"
+private[replicatedentity] final class ReplicatedCounterImpl extends InternalReplicatedData with ReplicatedCounter {
+  override final val name = "ReplicatedCounter"
   private var value: Long = 0
   private var deltaValue: Long = 0
 
@@ -37,14 +37,14 @@ private[replicatedentity] final class PNCounterImpl extends InternalReplicatedDa
   override def hasDelta: Boolean = deltaValue != 0
 
   override def delta: ReplicatedEntityDelta.Delta =
-    ReplicatedEntityDelta.Delta.Pncounter(PNCounterDelta(deltaValue))
+    ReplicatedEntityDelta.Delta.Counter(ReplicatedCounterDelta(deltaValue))
 
   override def resetDelta(): Unit = deltaValue = 0
 
   override val applyDelta = {
-    case ReplicatedEntityDelta.Delta.Pncounter(PNCounterDelta(increment, _)) =>
+    case ReplicatedEntityDelta.Delta.Counter(ReplicatedCounterDelta(increment, _)) =>
       value += increment
   }
 
-  override def toString = s"PNCounter($value)"
+  override def toString = s"ReplicatedCounter($value)"
 }

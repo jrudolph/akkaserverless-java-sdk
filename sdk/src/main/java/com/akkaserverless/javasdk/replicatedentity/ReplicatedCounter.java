@@ -16,15 +16,8 @@
 
 package com.akkaserverless.javasdk.replicatedentity;
 
-/**
- * A Positive-Negative Counter.
- *
- * <p>A Positive-Negative Counter is a counter that allows both incrementing, and decrementing. It
- * is based on two {@link GCounter}'s, a positive one that is incremented for every increment, and a
- * negative one that is incremented for every decrement. The current value of the counter is
- * calculated by subtracting the negative counter from the positive counter.
- */
-public interface PNCounter extends ReplicatedData {
+/** A counter that can be incremented and decremented. */
+public interface ReplicatedCounter extends ReplicatedData {
   /**
    * Get the current value of the counter.
    *
