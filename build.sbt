@@ -203,7 +203,18 @@ lazy val codegenCore =
     .settings(
       name := "akkaserverless-codegen-core",
       testFrameworks += new TestFramework("munit.Framework"),
-      Test / fork := false)
+      Test / fork := false,
+      // to provide access to protoc to tests
+      Test / buildInfoPackage := "com.lightbend.akkasls.codegen.tests",
+      Test / buildInfoKeys := Seq(
+        BuildInfoKey(PB.protocExecutable),
+        BuildInfoKey(PB.externalIncludePath),
+        BuildInfoKey(PB.externalSourcePath),
+        //BuildInforKey(PB.)
+      ),
+    )
+    // only need BuildInfo in Test scope so some manual setup here
+    .settings(BuildInfoPlugin.buildInfoScopedSettings(Test) ++ BuildInfoPlugin.buildInfoDefaultSettings)
     .settings(Dependencies.codegenCore)
     .settings(Compile / akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java))
     .settings(
